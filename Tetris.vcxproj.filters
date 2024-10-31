@@ -33,6 +33,12 @@
     <ClCompile Include="TestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GridTetromino.h">
@@ -50,5 +56,19 @@
     <ClInclude Include="TestSuite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TetrisGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="RedOctober.ttf" />
   </ItemGroup>
 </Project>

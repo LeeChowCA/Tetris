@@ -1,5 +1,12 @@
 #include "TetrisGame.h"
 
+const int TetrisGame::BLOCK_WIDTH = 32;
+const int TetrisGame::BLOCK_HEIGHT = 32;
+const double TetrisGame::MAX_SECONDS_PER_TICK = 0.75;
+const double TetrisGame::MIN_SECONDS_PER_TICK = 0.20;
+
+
+
 // constructor
 //   initialize/assign private member vars names that match param names
 //   reset() the game
@@ -16,7 +23,9 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 // - params: none
 // - return: nothing
 void TetrisGame::draw() {
-	
+	Point* p = new Point(0, 0);
+	TetColor t = TetColor::ORANGE;
+	drawBlock(*p, 0, 0,t );
 }
 
 // Event and game loop processing
@@ -69,7 +78,7 @@ void TetrisGame::pickNextShape() {
 // - params: none
 // - return: bool, true/false based on isPositionLegal()
 bool TetrisGame::spawnNextShape() {
-
+	return true;
 }
 
 // Test if a rotation is legal on the tetromino and if so, rotate it. 
@@ -81,7 +90,7 @@ bool TetrisGame::spawnNextShape() {
 // - param 1: GridTetromino shape
 // - return: bool, true/false to indicate successful movement
 bool TetrisGame::attemptRotate(GridTetromino& shape) {
-
+	return true;
 }
 
 // test if a move is legal on the tetromino, if so, move it.
@@ -95,7 +104,7 @@ bool TetrisGame::attemptRotate(GridTetromino& shape) {
 // - param 3: int y;
 // - return: true/false to indicate successful movement
 bool TetrisGame::attemptMove(GridTetromino& shape, int x, int y) {
-
+	return true;
 }
 
 // drops the tetromino vertically as far as it can 
@@ -138,6 +147,20 @@ void TetrisGame::lock(GridTetromino& shape) {
 // param 4: TetColor color
 // return: nothing
 void TetrisGame::drawBlock(Point& topLeft, int xOffset, int yOffset, TetColor& color) {
+	sf::Texture texture;
+	//sf::IntRect(0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
+	texture.loadFromFile("images/tiles.png");
+
+	if (!texture.loadFromFile("images/tiles.png", sf::IntRect(1, 1, BLOCK_WIDTH, BLOCK_HEIGHT))) {
+		std::cout << "image file fails loading";
+	}
+
+	sf::Sprite sprite;
+	//sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect(0, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
+	window.draw(sprite);
+
+	sprite.setPosition(1,1);
 
 }
 
@@ -179,7 +202,7 @@ void TetrisGame::updateScoreDisplay() {
 // - return: bool, true if shape is within borders (isWithinBorders()) and 
 //           the shape's mapped board locs are empty (false otherwise).
 bool TetrisGame::isPositionLegal(GridTetromino& shape) const {
-
+	return true;
 }
 
 // Determine if the shape is within the left, right, & bottom gameboard borders
@@ -190,7 +213,7 @@ bool TetrisGame::isPositionLegal(GridTetromino& shape) const {
 // - return: bool, true if the shape is within the left, right, and lower border
 //	         of the grid, but *NOT* the top border (false otherwise)
 bool TetrisGame::isWithinBorders(GridTetromino& shape) const {
-
+	return true;
 }
 
 // set secsPerTick 
