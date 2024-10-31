@@ -1,30 +1,3 @@
-//#include <SFML/Graphics.hpp>
-//#include "TestSuite.h"
-//
-//int main()
-//{	
-//	TestSuite::runTestSuite();
-//
-//	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-//	sf::CircleShape shape(100.f);
-//	shape.setFillColor(sf::Color::Green);
-//	while (window.isOpen())
-//	{
-//		sf::Event event;
-//		while (window.pollEvent(event))
-//		{
-//			if (event.type == sf::Event::Closed)
-//				window.close();
-//		}
-//		window.clear();
-//		window.draw(shape);
-//		window.display();
-//	}
-//	return 0;
-//}
-
-
-
 
 
 #include <SFML/Graphics.hpp>
@@ -34,7 +7,7 @@
 
 
 int main()
-{
+{	
 	// run some sanity tests on our classes to ensure they're working as expected.
 	TestSuite::runTestSuite();
 
@@ -48,11 +21,11 @@ int main()
 	//backgroundSprite.setTexture(backgroundTexture);
 
 	blockTexture.loadFromFile("images/tiles.png");	// load the tetris block sprite
-	blockSprite.setTexture(blockTexture);
+	blockSprite.setTexture(blockTexture);	
 
 	// create the game window
-	sf::RenderWindow window(sf::VideoMode(640, 800), "Tetris Game Window");
-
+	sf::RenderWindow window(sf::VideoMode(640, 800), "Tetris Game Window");	
+	
 	window.setFramerateLimit(30);				// set a max framerate of 30 FPS
 
 	const Point gameboardOffset{ 54, 125 };		// the pixel offset of the top left of the gameboard 
@@ -62,17 +35,17 @@ int main()
 	TetrisGame game(window, blockSprite, gameboardOffset, nextShapeOffset);
 
 	// set up a clock so we can determine seconds per game loop
-	sf::Clock clock;
+	sf::Clock clock;		
 
 	// create an event for handling userInput from the GUI (graphical user interface)
-	sf::Event guiEvent;
+	sf::Event guiEvent;	
 
 	// the main game loop
 	while (window.isOpen())
 	{
 		// how long since the last loop (fraction of a second)		
 		float elapsedTime = clock.getElapsedTime().asSeconds();
-		clock.restart();
+		clock.restart();		
 
 		// handle any window or keyboard events that have occured since the last game loop
 		sf::Event event;
@@ -96,6 +69,6 @@ int main()
 		game.draw();					// draw the game (onto the window)
 		window.display();				// re-display the entire window
 	}
-
+	
 	return 0;
 }
