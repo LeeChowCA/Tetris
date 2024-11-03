@@ -25,8 +25,10 @@ void GridTetromino::move(int xOffset, int yOffset) {
 std::vector<Point> GridTetromino::getBlockLocsMappedToGrid() const {
 	std::vector<Point> mappedVec{};
 
+	//we use a gridLoc to keep track of the position of tetromino, then block locations are just positions
+	//relative to that position, so we use gridLoc.X + p.X to get its position on the board
 	for (Point p : blockLocs) {
-		//set each element of t he blockLocs to the mapped position and then push it to the mappedVec vector.
+		//set each element of the blockLocs to the mapped position and then push it to the mappedVec vector.
 		p.setXY(p.getX() + gridLoc.getX(), p.getY() + gridLoc.getY());
 		mappedVec.push_back(p);
 	}

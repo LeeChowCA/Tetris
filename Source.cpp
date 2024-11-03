@@ -35,6 +35,7 @@
 
 int main()
 {
+    srand(time(0));
 	// run some sanity tests on our classes to ensure they're working as expected.
 	TestSuite::runTestSuite();
 
@@ -71,7 +72,7 @@ int main()
 	// the main game loop
 	while (window.isOpen())
 	{
-		game.draw();
+		//game.draw();
 		// how long since the last loop (fraction of a second)		
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
@@ -98,6 +99,5 @@ int main()
 		game.draw();					// draw the game (onto the window)
 		window.display();				// re-display the entire window
 	}
-
 	return 0;
 }

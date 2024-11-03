@@ -22,6 +22,7 @@
 #include <SFML/Graphics.hpp>
 
 
+
 class TetrisGame
 {
 public:
@@ -224,7 +225,6 @@ private:
 	// params: none
 	// return: nothing
 	void determineSecondsPerTick();
-
 
 };
 

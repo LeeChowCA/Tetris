@@ -23,7 +23,8 @@ enum class TetShape {
 	J,
 	O,
 	I,
-	T
+	T,
+	COUNT
 };
 
 class Tetromino
@@ -86,6 +87,9 @@ public:
 	// a couple existing methods in the Point class to accomplish this.
 	// make it so that the TetShape::O doesn’t rotate
 	void rotateClockwise();
+
+	//it's used to get random shape
+	static TetShape getRandomShape();
 };
 
 #endif

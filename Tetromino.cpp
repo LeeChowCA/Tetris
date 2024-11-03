@@ -70,14 +70,19 @@ void Tetromino::printToConsole() const {
 
 void Tetromino::rotateClockwise() {
 	for (auto& blockLoc : blockLocs) {
-		if (blockLoc.getX() != 0 || blockLoc.getY() != 0) {
-			/*int middleNum{};
-
-			middleNum = blockLoc.getX();
-			blockLoc.setX(blockLoc.getY());
-			blockLoc.setY(middleNum);*/
-
-			blockLoc.setXY(blockLoc.getY(), -blockLoc.getX());
+		if (shape != TetShape::O) {
+			if (blockLoc.getX() != 0 || blockLoc.getY() != 0) {
+				blockLoc.setXY(blockLoc.getY(), -blockLoc.getX());
+			}
 		}
 	}
+}
+
+
+
+TetShape Tetromino::getRandomShape() {
+
+	int randNum = rand() % static_cast<int>(TetShape::COUNT);
+
+	return static_cast<TetShape>(randNum);
 }
