@@ -17,9 +17,19 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 	:window(window), blockSprite(blockSprite), gameboardOffset(gameboardOffset), nextShapeOffset(nextShapeOffset)
 {
 	reset();
-	currentShape.setGridLoc(board.getSpawnLoc());
+	//currentShape.setGridLoc(board.getSpawnLoc());
 	//should set the nextShape gridLoc into spawn location here or somewhere else to make sure it falls from the middle
-	nextShape.setGridLoc(board.getSpawnLoc());
+	//nextShape.setGridLoc(board.getSpawnLoc());
+
+	// setup our font for drawing the score
+	if (!scoreFont.loadFromFile("fonts/RedOctober.ttf"))
+	{
+		assert(false && "Missing font: RedOctober.ttf");
+	};
+	scoreText.setFont(scoreFont);
+	scoreText.setCharacterSize(18);
+	scoreText.setFillColor(sf::Color::White);
+	scoreText.setPosition(425, 325);
 }
 
 // Draw anything to do with the game,
@@ -37,7 +47,11 @@ void TetrisGame::draw() {
 	//drawBlock(*p, 1, 1, rContent);
 
 	drawGameboard();
-	drawTetromino(currentShape, *p);
+	drawTetromino(currentShape, gameboardOffset);
+	drawTetromino(nextShape, nextShapeOffset);
+	window.draw(scoreText);
+
+
 }
 
 // Event and game loop processing
@@ -66,6 +80,7 @@ void TetrisGame::onKeyPressed(sf::Event& event) {
 	case sf::Keyboard::Space:
 		drop(currentShape);
 		lock(currentShape);
+		break;
 	default:
 		break;
 	}
@@ -87,20 +102,26 @@ void TetrisGame::processGameLoop(float secondsSinceLastLoop) {
 		shapePlacedSinceLastGameLoop = false;
 		if (spawnNextShape()) {
 			pickNextShape();
-			switch (board.removeCompletedRows())
+			int rowsRemoved = board.removeCompletedRows();
+			std::cout << "removed:" << rowsRemoved<<"\n";
+			switch (rowsRemoved)
 			{
-
 			case 1:
 				score += 40;
+				std::cout << "removed one\n";
+				updateScoreDisplay();
 				break;
 			case 2:
 				score += 100;
+				updateScoreDisplay();
 				break;
 			case 3:
 				score += 300;
+				updateScoreDisplay();
 				break;
 			case 4:
 				score += 1200;
+				updateScoreDisplay();
 				break;
 			default:
 				break;
@@ -163,6 +184,7 @@ void TetrisGame::reset() {
 // - return: nothing
 void TetrisGame::pickNextShape() {
 	nextShape.setShape(Tetromino::getRandomShape());
+	//nextShape.setGridLoc(nextShapeOffset);
 }
 
 // copy the nextShape into the currentShape (through assignment)
@@ -171,6 +193,7 @@ void TetrisGame::pickNextShape() {
 // - return: bool, true/false based on isPositionLegal()
 bool TetrisGame::spawnNextShape() {
 	currentShape = nextShape;
+	currentShape.setGridLoc(board.getSpawnLoc());
 
 	return isPositionLegal(currentShape);
 }
@@ -273,7 +296,7 @@ void TetrisGame::lock(GridTetromino& shape) {
 // param 3: int yOffset
 // param 4: TetColor color
 // return: nothing
-void TetrisGame::drawBlock(Point& topLeft, int xOffset, int yOffset, TetColor& color) {
+void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, TetColor& color) {
 	sf::Texture texture;
 	texture.loadFromFile("images/tiles.png");
 
@@ -290,25 +313,25 @@ void TetrisGame::drawBlock(Point& topLeft, int xOffset, int yOffset, TetColor& c
 	{
 	case TetColor::RED:
 		//decide which part of the texture to use, here, wo use the part from topleft to (BLOCK_WIDTH, BLOCK_HEIGHT)
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX(), topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	case TetColor::ORANGE:
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX() + BLOCK_WIDTH, topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0 + BLOCK_WIDTH, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	case TetColor::YELLOW:
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX() + BLOCK_WIDTH * 2, topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0 + BLOCK_WIDTH * 2, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	case TetColor::GREEN:
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX() + BLOCK_WIDTH * 3, topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0 + BLOCK_WIDTH * 3, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	case TetColor::BLUE_LIGHT:
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX() + BLOCK_WIDTH * 4, topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0 + BLOCK_WIDTH * 4, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	case TetColor::BLUE_DARK:
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX() + BLOCK_WIDTH * 5, topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0 + BLOCK_WIDTH * 5, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	case TetColor::PURPLE:
-		blockSprite.setTextureRect(sf::IntRect(topLeft.getX() + BLOCK_WIDTH * 6, topLeft.getY(), BLOCK_WIDTH, BLOCK_HEIGHT));
+		blockSprite.setTextureRect(sf::IntRect(0 + BLOCK_WIDTH * 6, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
 		break;
 	default:
 		std::cout<<"wrong color to choose";
@@ -316,7 +339,7 @@ void TetrisGame::drawBlock(Point& topLeft, int xOffset, int yOffset, TetColor& c
 	}
 
 	//set the postion of the blockSprite on the board. gameboardOffset will help to navigate to the topleft of gameboard
-	blockSprite.setPosition(gameboardOffset.getX() + xOffset * BLOCK_WIDTH, gameboardOffset.getY() + yOffset * BLOCK_HEIGHT);
+	blockSprite.setPosition(topLeft.getX() + xOffset * BLOCK_WIDTH, topLeft.getY() + yOffset * BLOCK_HEIGHT);
 	//draw the sprite on the board, need to be after setposition function.
 	window.draw(blockSprite);
 }
@@ -337,10 +360,10 @@ void TetrisGame::drawGameboard() {
 		for (int x = 0; x < board.MAX_X; x++) {
 			if (board.getContent(x, y) != Gameboard::EMPTY_BLOCK) {
 				int content = board.getContent(x, y);
-				std::cout << content;
+				//std::cout << content;
 				TetColor rContent = static_cast<TetColor>(content);
 				//std::cout << static_cast<int>(rContent);
-				drawBlock(*p, x, y, rContent);
+				drawBlock(gameboardOffset, x, y, rContent);
 			}
 		}
 	}
@@ -353,7 +376,7 @@ void TetrisGame::drawGameboard() {
 // param 1: GridTetromino tetromino
 // param 2: Point topLeft
 // return: nothing
-void TetrisGame::drawTetromino(GridTetromino& tetromino, Point& topLeft) {
+void TetrisGame::drawTetromino(GridTetromino& tetromino, const Point& topLeft) {
 	std::vector<Point> mapLocs = tetromino.getBlockLocsMappedToGrid();
 	TetColor t = TetColor::GREEN;
 
@@ -372,7 +395,10 @@ void TetrisGame::drawTetromino(GridTetromino& tetromino, Point& topLeft) {
 // params: none:
 // return: nothing
 void TetrisGame::updateScoreDisplay() {
+	std::string scoreString = "score: " + std::to_string(score);
+	std::cout << "current score: " << score << "\n";
 
+	scoreText.setString(scoreString);
 }
 
 // State & gameplay/logic methods ================================
