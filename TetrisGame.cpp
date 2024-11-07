@@ -155,8 +155,6 @@ void TetrisGame::tick() {
 	}
 
 	//std::cout << counter++;
-
-	
 }
 
 // reset everything for a new game (use existing functions) 
@@ -382,7 +380,7 @@ void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topL
 
 	if (tetromino.getGridLoc().getX() < board.MAX_X && tetromino.getGridLoc().getY() < board.MAX_Y) {
 		for (Point p : mapLocs) {
-            TetColor color = currentShape.getColor();
+            TetColor color = tetromino.getColor();
 			TetColor& rColor = color;
             drawBlock(topLeft, p.getX(), p.getY(), rColor);
 		}
