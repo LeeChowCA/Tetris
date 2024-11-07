@@ -58,7 +58,7 @@ void TetrisGame::draw() {
 // handles keypress events (up, left, right, down, space)
 // - param 1: sf::Event event
 // - return: nothing
-void TetrisGame::onKeyPressed(sf::Event& event) {
+void TetrisGame::onKeyPressed(const sf::Event& event) {
 
 	//still need to figure out why it's 1 and -1, instead of BLOCK_HEIGHT or BLOCK_WIDTH
 	switch (event.key.code)
@@ -266,7 +266,7 @@ void TetrisGame::drop(GridTetromino& shape) {
 	//      to true
 	// - param 1: GridTetromino shape
 	// - return: nothing
-void TetrisGame::lock(GridTetromino& shape) {
+void TetrisGame::lock(const GridTetromino& shape) {
 	std::vector<Point> blocks = shape.getBlockLocsMappedToGrid();
 
 	for (Point block : blocks) {
@@ -296,7 +296,7 @@ void TetrisGame::lock(GridTetromino& shape) {
 // param 3: int yOffset
 // param 4: TetColor color
 // return: nothing
-void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, TetColor& color) {
+void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color) {
 	sf::Texture texture;
 	texture.loadFromFile("images/tiles.png");
 
@@ -376,7 +376,7 @@ void TetrisGame::drawGameboard() {
 // param 1: GridTetromino tetromino
 // param 2: Point topLeft
 // return: nothing
-void TetrisGame::drawTetromino(GridTetromino& tetromino, const Point& topLeft) {
+void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topLeft) {
 	std::vector<Point> mapLocs = tetromino.getBlockLocsMappedToGrid();
 	TetColor t = TetColor::GREEN;
 
@@ -409,7 +409,7 @@ void TetrisGame::updateScoreDisplay() {
 // - param 1: GridTetromino shape
 // - return: bool, true if shape is within borders (isWithinBorders()) and 
 //           the shape's mapped board locs are empty (false otherwise).
-bool TetrisGame::isPositionLegal(GridTetromino& shape) const {
+bool TetrisGame::isPositionLegal(const GridTetromino& shape) const {
 	//std::vector<Point> blocks = shape.getBlockLocsMappedToGrid();
 
 
@@ -434,7 +434,7 @@ bool TetrisGame::isPositionLegal(GridTetromino& shape) const {
 // - param 1: GridTetromino shape
 // - return: bool, true if the shape is within the left, right, and lower border
 //	         of the grid, but *NOT* the top border (false otherwise)
-bool TetrisGame::isWithinBorders(GridTetromino& shape) const {
+bool TetrisGame::isWithinBorders(const GridTetromino& shape) const {
 
 	//if (shape.getShape() == TetShape::S || shape.getShape() == TetShape::Z || shape.getShape() == TetShape::T) {
 	//	
@@ -464,5 +464,5 @@ bool TetrisGame::isWithinBorders(GridTetromino& shape) const {
 // params: none
 // return: nothing
 void TetrisGame::determineSecondsPerTick() {
-
+	
 }

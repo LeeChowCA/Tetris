@@ -80,7 +80,7 @@ public:
 	// handles keypress events (up, left, right, down, space)
 	// - param 1: sf::Event event
 	// - return: nothing
-	void onKeyPressed(sf::Event& event);
+	void onKeyPressed(const sf::Event& event);
 
 	// called every game loop to handle ticks & tetromino placement (locking)
 	// - param 1: float secondsSinceLastLoop
@@ -152,7 +152,7 @@ private:
 		//      to true
 		// - param 1: GridTetromino shape
 		// - return: nothing
-	void lock(GridTetromino& shape);
+	void lock(const GridTetromino& shape);
 	
 	// Graphics methods ==============================================
 	
@@ -173,7 +173,7 @@ private:
 	// param 3: int yOffset
 	// param 4: TetColor color
 	// return: nothing
-	void drawBlock(const Point& topLeft, int xOffset, int yOffset, TetColor& color);
+	void drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color);
 										
 	// Draw the gameboard blocks on the window
 	//   Iterate through each row & col, use drawBlock() to 
@@ -189,7 +189,7 @@ private:
 	// param 1: GridTetromino tetromino
 	// param 2: Point topLeft
 	// return: nothing
-	void drawTetromino(GridTetromino& tetromino, const Point& topLeft);
+	void drawTetromino(const GridTetromino& tetromino, const Point& topLeft);
 	
 	// update the score display
 	// form a string "score: ##" to display the current score
@@ -206,7 +206,7 @@ private:
 	// - param 1: GridTetromino shape
 	// - return: bool, true if shape is within borders (isWithinBorders()) and 
 	//           the shape's mapped board locs are empty (false otherwise).
-	bool isPositionLegal(GridTetromino& shape) const;
+	bool isPositionLegal(const GridTetromino& shape) const;
 
 	
 	// Determine if the shape is within the left, right, & bottom gameboard borders
@@ -216,7 +216,7 @@ private:
 	// - param 1: GridTetromino shape
 	// - return: bool, true if the shape is within the left, right, and lower border
 	//	         of the grid, but *NOT* the top border (false otherwise)
-	bool isWithinBorders(GridTetromino& shape) const;
+	bool isWithinBorders(const GridTetromino& shape) const;
 
 
 	// set secsPerTick 
